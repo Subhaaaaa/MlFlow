@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/CZ0156/mlflow/mlruns/0/d4a8aa58aa844582aca8aea29c0019c5/artifacts
+end_time: 1695314016975
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: d4a8aa58aa844582aca8aea29c0019c5
+run_name: sassy-ant-830
+run_uuid: d4a8aa58aa844582aca8aea29c0019c5
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1695314016893
+status: 3
+tags: []
+user_id: CZ0156

@@ -45,7 +45,7 @@ def main(n_estimators, max_depth):
     X_train = train.drop(['quality'], axis=1)
     X_test = test.drop(['quality'], axis=1)
     y_train = train[['quality']]
-    y_test = test[['quality']]
+    y_test = test[['quality']]  
 
     # Model training 
 
@@ -69,8 +69,11 @@ def main(n_estimators, max_depth):
         mlflow.log_metric('accuracy',acc_score)
         mlflow.log_metric('Roc_auc_score',roc_auc)
 
+        # mlflow moddel logging
+        mlflow.sklearn.log_model(rfc,'Model Log')
+
         # print('MAE = {},MSE = {},RMSE = {},R2 Score = {}'.format(mae,mse,rmse,r2))
-        print('Accuracy score  = {}'.format(acc_score))
+        print('Accuracy score  = {}, Roc_auc_score = {}'.format(acc_score,roc_auc))
 
 if __name__ == '__main__':
 

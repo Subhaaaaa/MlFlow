@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/CZ0156/mlflow/mlruns/0/467f86c9ceae4404b72350ade000b1e7/artifacts
+end_time: 1695744494102
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 467f86c9ceae4404b72350ade000b1e7
+run_name: marvelous-gnat-839
+run_uuid: 467f86c9ceae4404b72350ade000b1e7
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1695744485817
+status: 3
+tags: []
+user_id: CZ0156

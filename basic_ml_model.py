@@ -8,7 +8,7 @@ import mlflow.sklearn
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import ElasticNet
 
-from sklearn.metrics import mean_absolute_error,mean_squared_error,r2_score,accuracy_score
+from sklearn.metrics import mean_absolute_error,mean_squared_error,r2_score,accuracy_score, roc_auc_score
 from sklearn.model_selection import train_test_split
 
 import argparse
@@ -23,7 +23,7 @@ def get_data():
     except Exception as e:
         raise e
 
-def evaluate(y_true,y_pred):
+def evaluate(y_true,y_pred,pred_prob):
 
     # mae = mean_absolute_error(y_true,y_pred)
     # mse = mean_squared_error(y_true,y_pred)
@@ -32,9 +32,10 @@ def evaluate(y_true,y_pred):
 
     # For forest models
     acc_score = accuracy_score(y_true,y_pred)
+    roc_auc = roc_auc_score(y_true,pred_prob,multi_class='ovr')
 
     # return mae,mse,rmse,r2,acc_score
-    return acc_score
+    return acc_score, roc_auc
 
 def main(n_estimators, max_depth):
     df = get_data()
@@ -52,15 +53,24 @@ def main(n_estimators, max_depth):
     # linear_regression.fit(X_train,y_train)
     # pred = linear_regression.predict(X_test)
 
-    rfc = RandomForestClassifier(n_estimators=n_estimators, max_depth=max_depth)
-    rfc.fit(X_train, y_train)
-    pred = rfc.predict(X_test)
+    with mlflow.start_run():
 
-    # Model Evaluation
-    acc_score = evaluate(y_test, pred)
+        rfc = RandomForestClassifier(n_estimators=n_estimators, max_depth=max_depth)
+        rfc.fit(X_train, y_train)
+        pred = rfc.predict(X_test)
+        pred_prob = rfc.predict_proba(X_test)
 
-    # print('MAE = {},MSE = {},RMSE = {},R2 Score = {}'.format(mae,mse,rmse,r2))
-    print('Accuracy score  = {}'.format(acc_score))
+        # Model Evaluation
+        acc_score, roc_auc = evaluate(y_test, pred, pred_prob)
+
+        mlflow.log_param('n_estimators',n_estimators)
+        mlflow.log_param('max_depth',max_depth)
+
+        mlflow.log_metric('accuracy',acc_score)
+        mlflow.log_metric('Roc_auc_score',roc_auc)
+
+        # print('MAE = {},MSE = {},RMSE = {},R2 Score = {}'.format(mae,mse,rmse,r2))
+        print('Accuracy score  = {}'.format(acc_score))
 
 if __name__ == '__main__':
 
